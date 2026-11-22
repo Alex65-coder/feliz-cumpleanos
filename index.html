@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>¡Feliz Cumpleaños!</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <canvas id="lienzoConfeti"></canvas>
+
+    <!-- Botón flotante para repetir o silenciar música -->
+    <button class="btn-musica" id="btnMusica" title="Música">🔊</button>
+
+    <!-- Destellos en el fondo -->
+    <div class="particula-fondo" style="width: 60px; height: 60px; top: 12%; left: 15%;"></div>
+    <div class="particula-fondo" style="width: 90px; height: 90px; bottom: 18%; right: 10%; animation-delay: 1.5s;"></div>
+    <div class="particula-fondo" style="width: 45px; height: 45px; top: 25%; right: 20%; animation-delay: 3s;"></div>
+
+    <div class="instruccion" id="textoGuia">✨ Toca el sobre para abrir tu sorpresa ✨</div>
+
+    <div class="sobre-contenedor" id="sobre">
+        <div class="solapa"></div>
+        <div class="sello">💖</div>
+        <div class="carta">
+            <h2>¡Feliz Cumpleaños! 🎂</h2>
+            <p>Hoy celebro la suerte de tener una amiga tan increíble como tú. Gracias por todas las risas, por escucharme siempre y por hacer que cualquier día normal se vuelva especial.</p>
+            <p>Deseo que este nuevo año de vida te traiga muchísima felicidad, sueños cumplidos y momentos inolvidables. ¡Te mereces todo lo bonito del mundo!</p>
+            <p class="firma">Con mucho cariño ✨</p>
+        </div>
+        <div class="bolsillo"></div>
+    </div>
+
+    <button class="btn-confeti" id="btnConfeti">🎉 ¡Lanzar más confeti!</button>
+
+    <script src="script.js"></script>
+</body>
+</html>
