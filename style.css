@@ -11,6 +11,7 @@
 body {
     background: linear-gradient(135deg, #ff758c 0%, #ff7eb3 45%, #a18cd1 100%);
     min-height: 100vh;
+    min-height: 100dvh; /* Ajuste exacto para navegadores de celular */
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -48,12 +49,12 @@ body {
     color: #fff;
     font-size: 1.15rem;
     font-weight: 600;
-    margin-bottom: 40px;
+    margin-bottom: 35px;
     text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
     animation: latido 1.4s infinite ease-in-out;
     text-align: center;
     z-index: 10;
-    transition: opacity 0.2s ease, transform 0.2s ease;
+    transition: opacity 0.2s ease;
 }
 
 @keyframes latido {
@@ -64,17 +65,18 @@ body {
 .sobre-contenedor {
     position: relative;
     width: 310px;
-    height: 205px;
+    height: 200px;
     background: linear-gradient(145deg, #ff5e7e, #ff3f68);
     border-radius: 0 0 16px 16px;
     box-shadow: 0 18px 35px rgba(168, 24, 65, 0.35);
     cursor: pointer;
     z-index: 10;
-    transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+    transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-.sobre-contenedor:active {
-    transform: scale3d(0.95, 0.95, 1);
+/* Al abrirse, el sobre baja para dar espacio arriba */
+.sobre-contenedor.abierto {
+    transform: translate3d(0, 95px, 0);
 }
 
 .solapa {
@@ -85,7 +87,7 @@ body {
     height: 0;
     border-left: 155px solid transparent;
     border-right: 155px solid transparent;
-    border-top: 115px solid #ff2e58;
+    border-top: 112px solid #ff2e58;
     transform-origin: top;
     transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
     will-change: transform;
@@ -101,8 +103,8 @@ body {
     height: 0;
     border-left: 155px solid #ff7591;
     border-right: 155px solid #ff7591;
-    border-bottom: 102px solid #ff5e7e;
-    border-top: 103px solid transparent;
+    border-bottom: 100px solid #ff5e7e;
+    border-top: 100px solid transparent;
     border-radius: 0 0 16px 16px;
     z-index: 3;
     pointer-events: none;
@@ -110,7 +112,7 @@ body {
 
 .sello {
     position: absolute;
-    top: 82px;
+    top: 80px;
     left: 50%;
     transform: translate3d(-50%, 0, 0);
     width: 54px;
@@ -129,14 +131,14 @@ body {
 
 .carta {
     position: absolute;
-    bottom: 10px;
-    left: 15px;
-    width: 280px;
-    height: 185px;
-    background: rgba(255, 255, 255, 0.96);
+    bottom: 12px;
+    left: 12px;
+    width: 286px;
+    height: 175px;
+    background: rgba(255, 255, 255, 0.98);
     border: 2px solid #ffe3ec;
     border-radius: 14px;
-    padding: 22px 20px;
+    padding: 20px 18px;
     box-shadow: 0 4px 12px rgba(0,0,0,0.1);
     z-index: 2;
     opacity: 0;
@@ -151,26 +153,26 @@ body {
 .carta h2 {
     font-family: 'Caveat', cursive;
     color: #ff2e58;
-    font-size: 2.1rem;
-    margin-bottom: 12px;
+    font-size: 2rem;
+    margin-bottom: 10px;
     text-align: center;
     line-height: 1.1;
 }
 
 .carta p {
     color: #4a4a4a;
-    font-size: 0.93rem;
-    line-height: 1.55;
-    margin-bottom: 12px;
+    font-size: 0.9rem;
+    line-height: 1.5;
+    margin-bottom: 10px;
     text-align: left;
 }
 
 .firma {
     font-family: 'Caveat', cursive;
-    font-size: 1.55rem;
+    font-size: 1.5rem;
     color: #ff2e58;
     text-align: right !important;
-    margin-top: 8px;
+    margin-top: 6px;
 }
 
 .sobre-contenedor.abierto .solapa {
@@ -183,24 +185,27 @@ body {
     transform: translate3d(-50%, -15px, 0) scale(0.4);
 }
 
+/* Posición centrada y cómoda para leer */
 .sobre-contenedor.abierto .carta {
     opacity: 1;
-    transform: translate3d(0, -100px, 0) scale(1);
-    height: 380px;
+    transform: translate3d(0, -65px, 0) scale(1);
+    height: 340px;
+    max-height: 62vh;
     z-index: 6;
     box-shadow: 0 22px 45px rgba(130, 15, 50, 0.28);
 }
 
+/* Botón bien ubicado debajo del sobre */
 .btn-confeti {
-    margin-top: 145px;
-    padding: 13px 28px;
-    background: rgba(255, 255, 255, 0.92);
+    margin-top: 120px;
+    padding: 12px 26px;
+    background: rgba(255, 255, 255, 0.94);
     color: #ff2e58;
     border: 2px solid #fff;
     border-radius: 30px;
     font-family: 'Poppins', sans-serif;
     font-weight: 600;
-    font-size: 0.98rem;
+    font-size: 0.95rem;
     box-shadow: 0 8px 20px rgba(168, 24, 65, 0.2);
     cursor: pointer;
     z-index: 10;
@@ -219,18 +224,19 @@ body {
 .btn-confeti:active {
     transform: scale3d(0.92, 0.92, 1);
 }
+
 .btn-musica {
     position: fixed;
-    top: 20px;
-    right: 20px;
-    width: 46px;
-    height: 46px;
+    top: 16px;
+    right: 16px;
+    width: 44px;
+    height: 44px;
     border-radius: 50%;
-    border: 2px solid rgba(255, 255, 255, 0.8);
+    border: 2px solid rgba(255, 255, 255, 0.85);
     background: rgba(255, 255, 255, 0.25);
     backdrop-filter: blur(5px);
     color: #fff;
-    font-size: 1.3rem;
+    font-size: 1.25rem;
     display: flex;
     justify-content: center;
     align-items: center;

@@ -93,18 +93,34 @@ function animarConfeti() {
     }
 }
 
-// --- MOTOR DE CAJITA MUSICAL ("Feliz Cumpleaños") ---
+// --- DESBLOQUEO Y MOTOR DE AUDIO PARA CELULARES ---
+function desbloquearAudio() {
+    const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+    if (!audioCtx) {
+        audioCtx = new AudioContextClass();
+    }
+    if (audioCtx.state === 'suspended') {
+        audioCtx.resume();
+    }
+    // Pulso silencioso para forzar apertura de hardware de audio en iOS/Android
+    const buffer = audioCtx.createBuffer(1, 1, 22050);
+    const source = audioCtx.createBufferSource();
+    source.buffer = buffer;
+    source.connect(audioCtx.destination);
+    source.start(0);
+}
+
 function tocarNota(frecuencia, duracion, tiempoInicio) {
     if (!audioCtx) return;
     const osc = audioCtx.createOscillator();
     const ganancia = audioCtx.createGain();
 
-    osc.type = 'sine'; // Tono dulce tipo cajita musical
+    // Onda triangular suena más clara y con más volumen en bocinas de celular
+    osc.type = 'triangle';
     osc.frequency.setValueAtTime(frecuencia, tiempoInicio);
 
-    // Suavizado para evitar chasquidos
     ganancia.gain.setValueAtTime(0.001, tiempoInicio);
-    ganancia.gain.exponentialRampToValueAtTime(0.25, tiempoInicio + 0.03);
+    ganancia.gain.exponentialRampToValueAtTime(0.45, tiempoInicio + 0.03);
     ganancia.gain.exponentialRampToValueAtTime(0.001, tiempoInicio + duracion);
 
     osc.connect(ganancia);
@@ -115,32 +131,25 @@ function tocarNota(frecuencia, duracion, tiempoInicio) {
 }
 
 function iniciarMelodia() {
-    if (!audioCtx) {
-        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-    }
-    if (audioCtx.state === 'suspended') {
-        audioCtx.resume();
-    }
-
+    desbloquearAudio();
     detenerMelodia();
+    
     tocandoMusica = true;
     btnMusica.textContent = '🔊';
 
-    // Frecuencias en Hz de las notas (Do4 a Fa5)
     const N = {
         C4: 261.63, D4: 293.66, E4: 329.63, F4: 349.23,
         G4: 392.00, A4: 440.00, Bb4: 466.16, C5: 523.25
     };
 
-    // Partitura: [nota, duración en segundos]
     const cancion = [
-        [N.C4, 0.3], [N.C4, 0.3], [N.D4, 0.6], [N.C4, 0.6], [N.F4, 0.6], [N.E4, 1.1],
-        [N.C4, 0.3], [N.C4, 0.3], [N.D4, 0.6], [N.C4, 0.6], [N.G4, 0.6], [N.F4, 1.1],
-        [N.C4, 0.3], [N.C4, 0.3], [N.C5, 0.6], [N.A4, 0.6], [N.F4, 0.5], [N.E4, 0.5], [N.D4, 1.0],
-        [N.Bb4, 0.3], [N.Bb4, 0.3], [N.A4, 0.6], [N.F4, 0.6], [N.G4, 0.6], [N.F4, 1.3]
+        [N.C4, 0.32], [N.C4, 0.32], [N.D4, 0.6], [N.C4, 0.6], [N.F4, 0.6], [N.E4, 1.1],
+        [N.C4, 0.32], [N.C4, 0.32], [N.D4, 0.6], [N.C4, 0.6], [N.G4, 0.6], [N.F4, 1.1],
+        [N.C4, 0.32], [N.C4, 0.32], [N.C5, 0.6], [N.A4, 0.6], [N.F4, 0.5], [N.E4, 0.5], [N.D4, 1.0],
+        [N.Bb4, 0.32], [N.Bb4, 0.32], [N.A4, 0.6], [N.F4, 0.6], [N.G4, 0.6], [N.F4, 1.3]
     ];
 
-    let tiempo = audioCtx.currentTime + 0.1;
+    let tiempo = audioCtx.currentTime + 0.08;
     let duracionTotal = 0;
 
     cancion.forEach(([freq, dur]) => {
@@ -149,7 +158,6 @@ function iniciarMelodia() {
         duracionTotal += dur;
     });
 
-    // Repetir automáticamente cuando termine
     const timer = setTimeout(() => {
         if (tocandoMusica) iniciarMelodia();
     }, duracionTotal * 1000 + 800);
@@ -163,10 +171,9 @@ function detenerMelodia() {
     temporizadoresNotas = [];
 }
 
-// --- EVENTOS TÁCTILES ---
-sobre.addEventListener('pointerdown', (e) => {
+// --- EVENTOS COMPATIBLES CON TODOS LOS CELULARES ---
+sobre.addEventListener('click', () => {
     if (!cartaAbierta) {
-        e.preventDefault();
         cartaAbierta = true;
         sobre.classList.add('abierto');
         textoGuia.style.opacity = '0';
@@ -178,13 +185,11 @@ sobre.addEventListener('pointerdown', (e) => {
     }
 });
 
-btnConfeti.addEventListener('pointerdown', (e) => {
-    e.preventDefault();
+btnConfeti.addEventListener('click', () => {
     crearExplosionConfeti();
 });
 
-btnMusica.addEventListener('pointerdown', (e) => {
-    e.preventDefault();
+btnMusica.addEventListener('click', () => {
     if (tocandoMusica) {
         detenerMelodia();
     } else {
